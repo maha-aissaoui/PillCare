@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PillCare - Care Made Simple</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="bienvenue.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="footer.css" />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.js"></script>
+  </head>
+  <body>
+    <!-- Header avec l'effet ondulé -->
+    <header class="header">
+      <div class="header-content">
+        <!-- Logo et texte de bienvenue -->
+        <div class="logo-container">
+          <img src="logo.png" alt="PillCare Logo" class="logo-img" />
+          <div class="welcome-text">
+            <h2>Bienvenue sur PillCare</h2>
+          </div>
+        </div>
+
+        <!-- Boutons de connexion et inscription -->
+        <div class="header-buttons">
+          <a href="login.php" class="header-btn header-btn-connect"
+            >Se connecter</a
+          >
+          <a href="login.php" class="header-btn header-btn-signup"
+            >S'inscrire</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <!-- Écran de démarrage avec animation -->
+    <div id="splash-screen">
+      <div class="splash-content">
+        <img src="logo.png" alt="PillCare Logo" class="logo" />
+        <p class="quote">
+          "Parce que derrière chaque pilule, il y a une vie précieuse. PillCare
+          est là pour la protéger"
+        </p>
+        <div class="loader"></div>
+      </div>
+    </div>
+
+    <!-- Section de bienvenue pour les nouveaux visiteurs -->
+    <section id="welcome-section" class="page active">
+      <div class="welcome-content">
+        <div class="features">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-pills"></i>
+            </div>
+            <h3>Gestion des Médicaments</h3>
+            <p>Suivez vos médicaments avec des rappels personnalisés</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-calendar-check"></i>
+            </div>
+            <h3>Rendez-vous Médicaux</h3>
+            <p>Ne manquez jamais un important rendez-vous médical</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-file-medical"></i>
+            </div>
+            <h3>Gestion d'Ordonnances</h3>
+            <p>Stockez et consultez facilement vos ordonnances</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-phone-alt"></i>
+            </div>
+            <h3>Contacts d'Urgence</h3>
+            <p>Accédez rapidement à vos contacts en cas d'urgence</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div id="footer-placeholder"></div>
+    <script src="app.js"></script>
+  </body>
+</html>

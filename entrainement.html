@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="entrainement.css" />
+    <title>PillCare - Entraînement de la Mémoire</title>
+    <meta
+      name="description"
+      content="Exercices d'entraînement de la mémoire - PillCare"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <!-- Image de fond -->
+      <div class="header-bg"></div>
+
+      <!-- Effet ondulé -->
+      <div class="wave-container"></div>
+
+      <!-- Contenu du header -->
+      <div class="header-content">
+        <!-- Logo et slogan -->
+        <div class="logo-container">
+          <img src="logo.png" alt="PillCare Logo" class="logo-img" />
+        </div>
+
+        <!-- Barre de navigation en haut -->
+        <nav class="top-nav">
+          <a href="index.html" class="nav-item active" data-page="home"
+            >Accueil</a
+          >
+          <a href="Medicament.html" class="nav-item" data-page="Medicament"
+            >Medicaments</a
+          >
+          <a href="calendrier.html" class="nav-item" data-page="calendar"
+            >Calendrier</a
+          >
+          <a href="appointments.html" class="nav-item" data-page="appointments"
+            >rendez-vous</a
+          >
+          <a href="trainig.html" class="nav-item" data-page="training"
+            >Entrainement</a
+          >
+        </nav>
+
+        <div class="user-menu">
+          <button id="user-btn"><i class="fas fa-user-circle"></i></button>
+          <div class="dropdown-menu">
+            <a href="profile.html"><i class="fas fa-id-card"></i> Mon Profil</a>
+            <a href="settings.html"><i class="fas fa-cog"></i> Paramètres</a>
+            <a href="#" class="theme-toggle" onclick="toggleTheme()"
+              ><i class="fas fa-moon"></i> Thème</a
+            >
+            <a href="#" id="logout-btn"
+              ><i class="fas fa-sign-out-alt"></i> Déconnexion</a
+            >
+          </div>
+        </div>
+
+        <button class="mobile-menu-btn">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <?php include 'includes/header.php'; ?>
+
+    <main class="container">
+      <div class="training-dashboard">
+        <h1>Entraînement de la Mémoire</h1>
+
+        <?php if (!empty($errorMsg)): ?>
+        <div class="alert alert-error" role="alert">
+          <?php echo $errorMsg; ?>
+        </div>
+        <?php endif; ?>
+
+        <?php if (!empty($successMsg)): ?>
+        <div class="alert alert-success" role="alert">
+          <?php echo $successMsg; ?>
+        </div>
+        <?php endif; ?>
+
+        <div class="training-sections">
+          <section class="activities-section">
+            <h2>Mes Exercices</h2>
+            <?php if (empty($trainingActivities)): ?>
+            <p class="no-activities">
+              Vous n'avez pas encore d'exercices. Commencez par en ajouter un!
+            </p>
+            <?php else: ?>
+            <ul class="activities-list">
+              <?php foreach ($trainingActivities as $activity): ?>
+              <li class="activity-item">
+                <div class="activity-content">
+                  <h3><?php echo htmlspecialchars($activity['name']); ?></h3>
+                  <?php if (isset($activity['created_at'])): ?>
+                  <span class="activity-date"
+                    >Ajouté le:
+                    <?php echo date('d/m/Y', strtotime($activity['created_at'])); ?></span
+                  >
+                  <?php endif; ?>
+                </div>
+                <div class="activity-actions">
+                  <form method="POST" class="delete-form">
+                    <input
+                      type="hidden"
+                      name="activity_id"
+                      value="<?php echo $activity['id']; ?>"
+                    />
+                    <button
+                      type="submit"
+                      name="delete_activity"
+                      class="btn-delete"
+                      aria-label="Supprimer cet exercice"
+                    >
+                      <span class="icon-delete">×</span>
+                    </button>
+                  </form>
+                  <a
+                    href="exercise.php?id=<?php echo $activity['id']; ?>"
+                    class="btn-start"
+                    >Démarrer</a
+                  >
+                </div>
+              </li>
+              <?php endforeach; ?>
+            </ul>
+            <?php endif; ?>
+          </section>
+
+          <section class="add-activity-section">
+            <h2>Ajouter un Nouvel Exercice</h2>
+            <form method="POST" action="training.php" class="add-activity-form">
+              <div class="form-group">
+                <label for="activity_name">Nom de l'exercice:</label>
+                <input
+                  type="text"
+                  id="activity_name"
+                  name="activity_name"
+                  placeholder="Ex: Mémorisation de liste de courses"
+                  maxlength="100"
+                  required
+                />
+              </div>
+              <button type="submit" name="add_activity" class="btn-primary">
+                Ajouter cet exercice
+              </button>
+            </form>
+          </section>
+        </div>
+
+        <section class="training-tips">
+          <h2>Conseils pour Améliorer votre Mémoire</h2>
+          <ul class="tips-list">
+            <li>Pratiquez régulièrement des exercices de mémorisation</li>
+            <li>Mangez des aliments riches en antioxydants</li>
+            <li>Faites de l'exercice physique régulièrement</li>
+            <li>Assurez-vous de dormir suffisamment</li>
+            <li>Utilisez des techniques comme l'association d'idées</li>
+          </ul>
+        </section>
+      </div>
+    </main>
+
+    <?php include 'includes/footer.php'; ?>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Confirmation avant suppression
+        const deleteForms = document.querySelectorAll(".delete-form");
+        deleteForms.forEach((form) => {
+          form.addEventListener("submit", function (e) {
+            if (!confirm("Êtes-vous sûr de vouloir supprimer cet exercice?")) {
+              e.preventDefault();
+            }
+          });
+        });
+
+        // Masquer les alertes après 5 secondes
+        const alerts = document.querySelectorAll(".alert");
+        alerts.forEach((alert) => {
+          setTimeout(() => {
+            alert.style.opacity = "0";
+            setTimeout(() => {
+              alert.style.display = "none";
+            }, 1000);
+          }, 5000);
+        });
+      });
+    </script>
+  </body>
+</html>

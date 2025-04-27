@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediAssist - Mes Rendez-vous</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="footer.css">
+    <style>
+        :root {
+            --primary: #2c4f7c;
+            --primary-light: #3a648e;
+            --primary-dark: #1e3a5f;
+            --secondary: #3498db;
+            --accent: #27ae60;
+            --warning: #e67e22;
+            --danger: #e74c3c;
+            --grey-light: #f5f7fa;
+            --grey: #ecf0f1;
+            --grey-dark: #bdc3c7;
+            --text: #333;
+            --text-light: #7f8c8d;
+            --white: #fff;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--grey-light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            box-shadow: var(--shadow);
+            z-index: 10;
+        }
+
+        .logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .nav-item {
+            margin-bottom: 5px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            opacity: 0.8;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--primary-light);
+            opacity: 1;
+        }
+
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .user-profile {
+            margin-top: auto;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            margin-left: 240px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .action-button {
+            background-color: var(--accent);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .action-button i {
+            margin-right: 8px;
+        }
+
+        .action-button:hover {
+            background-color: #219653;
+        }
+
+        .appointments-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .appointment-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            position: relative;
+        }
+
+        .appointment-date {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .appointment-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .appointment-details {
+            margin-bottom: 15px;
+        }
+
+        .appointment-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .appointment-detail i {
+            margin-right: 10px;
+            color: var(--text-light);
+            width: 16px;
+            text-align: center;
+        }
+
+        .appointment-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+
+        .appointment-action {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            margin-left: 15px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .appointment-action:hover {
+            color: var(--primary);
+        }
+
+        .appointment-action.delete:hover {
+            color: var(--danger);
+        }
+
+        .category-tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .category-consultation {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--secondary);
+        }
+
+        .category-analyse {
+            background-color: rgba(155, 89, 182, 0.1);
+            color: #9b59b6;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            color: var(--grey-dark);
+            margin-bottom: 20px;
+        }
+
+        .empty-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .empty-text {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        /* Modal styles */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background-color: var(--white);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-backdrop.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--grey);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--danger);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--grey-dark);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+        }
+
+        .radio-option input {
+            margin-right: 8px;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--grey);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-secondary {
+            background-color: var(--grey);
+            color: var(--text);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--grey-dark);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .calendar-view {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .calendar-nav-btn {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            color: var(--text);
+            margin: 0 10px;
+        }
+
+        .calendar-month {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .calendar-view-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-option {
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            background-color: var(--grey);
+            color: var(--text);
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .view-option.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .calendar-day-name {
+            text-align: center;
+            font-weight: 600;
+            padding: 10px 0;
+            color: var(--text-light);
+        }
+
+        .calendar-day {
+            aspect-ratio: 1.2;
+            border: 1px solid var(--grey);
+            border-radius: 5px;
+            padding: 5px;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            background-color: var(--grey-light);
+        }
+
+        .day-number {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .calendar-day.has-events {
+            border-left: 3px solid var(--accent);
+        }
+
+        .event-indicator {
+            height: 5px;
+            width: 5px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: inline-block;
+            margin-right: 2px;
+        }
+
+        .calendar-day.today {
+            background-color: rgba(44, 79, 124, 0.05);
+            border: 2px solid var(--primary);
+        }
+
+        .calendar-day.other-month {
+            opacity: 0.4;
+        }
+
+        .toggle-view {
+            margin-bottom: 20px;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            background-color: var(--grey);
+            border-radius: 5px;
+            overflow: hidden;
+            width: fit-content;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .toggle-btn.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        /* Pills styles */
+        .filter-pills {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-pill {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-pill.all {
+            background-color: var(--grey);
+            color: var(--text);
+        }
+
+        .filter-pill.consultation {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--secondary);
+        }
+
+        .filter-pill.analyse {
+            background-color: rgba(155, 89, 182, 0.1);
+            color: #9b59b6;
+        }
+
+        .filter-pill.active {
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-weight: 600;
+        }
+
+        .filter-pill.all.active {
+            background-color: var(--grey-dark);
+        }
+
+        .filter-pill.consultation.active {
+            background-color: rgba(52, 152, 219, 0.2);
+        }
+
+        .filter-pill.analyse.active {
+            background-color: rgba(155, 89, 182, 0.2);
+        }
+
+        .filter-pill i {
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+                padding: 20px 0;
+            }
+
+            .logo h1, .nav-link span, .user-info {
+                display: none;
+            }
+
+            .nav-link {
+                justify-content: center;
+                padding: 15px 0;
+            }
+
+            .nav-link i {
+                margin-right: 0;
+            }
+
+            .user-profile {
+                justify-content: center;
+                padding: 10px;
+            }
+
+            .avatar {
+                margin-right: 0;
+            }
+
+            .main-content {
+                margin-left: 60px;
+                padding: 20px;
+            }
+
+            .calendar-grid {
+                gap: 5px;
+            }
+
+            .calendar-day-name, .day-number {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>MediAssist</h1>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>Accueil</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Rendez-vous</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-file-medical"></i>
+                        <span>Dossiers</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-pills"></i>
+                        <span>Médicaments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-user-md"></i>
+                        <span>Médecins</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Santé</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Paramètres</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="user-profile">
+                <div class="avatar">MP</div>
+                <div class="user-info">
+                    <div class="user-name">Martin Petiot</div>
+                    <div class="user-role">Patient</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Mes Rendez-vous</h1>
+                <button class="action-button" id="add-appointment-btn">
+                    <i class="fas fa-plus"></i> Ajouter un rendez-vous
+                </button>
+            </div>
+
+            <!-- Toggle view buttons -->
+            <div class="toggle-view">
+                <div class="toggle-buttons">
+                    <button class="toggle-btn" id="calendar-view-btn">Calendrier</button>
+                    <button class="toggle-btn active" id="list-view-btn">Liste</button>
+                </div>
+            </div>
+
+            <!-- Calendar view -->
+            <div class="calendar-view hidden" id="calendar-container">
+                <div class="calendar-header">
+                    <div class="calendar-nav">
+                        <button class="calendar-nav-btn"><i class="fas fa-chevron-left"></i></button>
+                        <div class="calendar-month">Avril 2025</div>
+                        <button class="calendar-nav-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="calendar-view-options">
+                        <button class="view-option active">Mois</button>
+                        <button class="view-option">Semaine</button>
+                        <button class="view-option">Jour</button>
+                    </div>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-day-name">Lun</div>
+                    <div class="calendar-day-name">Mar</div>
+                    <div class="calendar-day-name">Mer</div>
+                    <div class="calendar-day-name">Jeu</div>
+                    <div class="calendar-day-name">Ven</div>
+                    <div class="calendar-day-name">Sam</div>
+                    <div class="calendar-day-name">Dim</div>
+                    
+                    <div class="calendar-day other-month">
+                        <div class="day-number">31</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">1</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">2</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">3</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">4</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">5</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">6</div>
+                    </div>
+                    
+                    <div class="calendar-day">
+                        <div class="day-number">7</div>
+                    </div>
+                    <div class="calendar-day has-events">
+                        <div class="day-number">8</div>
+                        <div class="event-indicator"></div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">9</div>
+                    </div>
+                    <div class="calendar-day today">
+                        <div class="day-number">10</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">11</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">12</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">13</div>
+                    </div>
+                    
+                    <div class="calendar-day">
+                        <div class="day-number">14</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">15</div>
+                    </div>
+                    <div class="calendar-day has-events">
+                        <div class="day-number">16</div>
+                        <div class="event-indicator"></div>
+                        <div class="event-indicator"></div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">17</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">18</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">19</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">20</div>
+                    </div>
+                    
+                    <div class="calendar-day">
+                        <div class="day-number">21</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">22</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">23</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">24</div>
+                    </div>
+                    <div class="calendar-day has-events">
+                        <div class="day-number">25</div>
+                        <div class="event-indicator"></div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">26</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">27</div>
+                    </div>
+                    
+                    <div class="calendar-day">
+                        <div class="day-number">28</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">29</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">30</div>
+                    </div>
+                    <div class="calendar-day other-month">
+                        <div class="day-number">1</div>
+                    </div>
+                    <div class="calendar-day other-month">
+                        <div class="day-number">2</div>
+                    </div>
+                    <div class="calendar-day other-month">
+                        <div class="day-number">3</div>
+                    </div>
+                    <div class="calendar-day other-month">
+                        <div class="day-number">4</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List view -->
+            <div id="list-container">
+                <!-- Filter Pills -->
+                <div class="filter-pills">
+                    <div class="filter-pill all active" data-filter="all">
+                        <i class="fas fa-list"></i> Tous
+                    </div>
+                    <div class="filter-pill consultation" data-filter="consultation">
+                        <i class="fas fa-user-md"></i> Consultations
+                    </div>
+                    <div class="filter-pill analyse" data-filter="analyse">
+                        <i class="fas fa-vial"></i> Analyses
+                    </div>
+                </div>
+                
+                <!-- Appointments List -->
+                <div class="appointments-container" id="appointments-list">
+                    <div class="appointment-card" data-category="consultation">
+                        <div class="category-tag category-consultation">Consultation</div>
+                        <div class="appointment-date">Mardi 8 Avril 2025 - 10:30</div>
+                        <h3 class="appointment-title">Dr. Sophie Martin - Cardiologue</h3>
+                        <div class="appointment-details">
+                            <div class="appointment-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Hôpital Saint-Joseph, Service Cardiologie, 3ème étage</span>
+                            </div>
+                            <div class="appointment-detail">
+                                <i class="fas fa-phone"></i>
+                                <span>04 91 XX XX XX</span>
+                            </div>
+                            <div class="appointment-detail">
+                                <i class="fas fa-comment"></i>
+                                <span>Contrôle annuel + nouvelles analyses</span>
+                            </div>
+                        </div>
+                        <div class="appointment-actions">
+                            <button class="appointment-action edit">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            <button class="appointment-action delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="appointment-card" data-category="analyse">
+                        <div class="category-tag category-analyse">Analyse</div>
+                        <div class="appointment-date">Mercredi 16 Avril 2025 - 08:15</div>
+                        <h3 class="appointment-title">Laboratoire Central - Prise de sang</h3>
+                        <div class="appointment-details">
+                            <div class="appointment-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>10 rue des Lilas, 13008 Marseille</span>
+                            </div>
+                            <div class="appointment-detail">
+                                <i class="fas fa-phone"></i>
+                                <span>04 91 XX XX XX</span>
+                            </div>
+                            <div class="appointment-detail">
+                                <i class="fas fa-comment"></i>
+                                <span>À jeun, apporter l'ordonnance du Dr. Martin</span>
+                            </div>
+                        </div>
+                        <div class="appointment-actions">
+                            <button class="appointment-action edit">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            <button class="appointment-action delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="appointment-card" data-category="consultation">
+                        <div class="category-tag category-consultation">Consultation</div>
+                        <div class="appointment-date">Mercredi 16 Avril 2025 - 14:00</div>
+                        <h3 class="appointment-title">Dr. Philippe Roux - Médecin généraliste</h3>
+                        <div class="appointment-details">
+                            <div class="appointment-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Cabinet médical du Parc, 24 avenue du Prado</span>
+                            </div>
+                            <div class="appointment-detail">
+                                <i class="fas fa-phone"></i>
+                                <span>04 91 XX XX XX</span>
+                            </div>
+                            <div class

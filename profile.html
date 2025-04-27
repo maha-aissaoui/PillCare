@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profil - Calendrier Mémo</title>
+    <link rel="stylesheet" href="profile.css" />
+    <link rel="stylesheet" href="footer.css" />
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-bg"></div>
+      <div class="wave-container"></div>
+      <div class="header-content">
+        <div class="logo-container">
+          <img src="logo.png" alt="PillCare Logo" class="logo-img" />
+        </div>
+        <nav class="top-nav">
+          <a href="index.html" class="nav-item" data-page="home">Accueil</a>
+          <a href="Medicament.html" class="nav-item" data-page="Medicament"
+            >Medicaments</a
+          >
+          <a href="calendrier.html" class="nav-item" data-page="calendar"
+            >Calendrier</a
+          >
+          <a href="ordonance.html" class="nav-item" data-page="ordonance"
+            >ordonance</a
+          >
+          <a href="profile.html" class="nav-item active" data-page="profile"
+            >profile</a
+          >
+        </nav>
+        <div class="user-menu">
+          <button id="user-btn"><i class="fas fa-user-circle"></i></button>
+          <div class="dropdown-menu">
+            <a href="settings.html"><i class="fas fa-cog"></i> Paramètres</a>
+            <a href="#" class="theme-toggle" onclick="toggleTheme()"
+              ><i class="fas fa-moon"></i> Thème</a
+            >
+            <a href="#" id="logout-btn"
+              ><i class="fas fa-sign-out-alt"></i> Déconnexion</a
+            >
+          </div>
+        </div>
+        <button class="mobile-menu-btn">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <main class="container">
+      <section>
+        <h1>Profil</h1>
+        <p class="subtitle">Gérez vos informations personnelles</p>
+      </section>
+
+      <div class="profile-container">
+        <div class="profile-card">
+          <div class="profile-photo" id="profilePhotoDisplay">
+            <span id="initials">JP</span>
+          </div>
+          <h2 class="profile-name" id="profileNameDisplay">Jean Dupont</h2>
+          <p class="profile-info" id="profileAgeDisplay">68 ans</p>
+          <p class="profile-info" id="profileEmailDisplay">
+            jean.dupont@email.com
+          </p>
+          <p class="profile-info" id="profilePhoneDisplay">06 12 34 56 78</p>
+          <button class="profile-action" id="uploadPhotoBtn">
+            Changer la photo
+          </button>
+          <input type="file" id="photoInput" accept="image/*" hidden />
+        </div>
+
+        <div class="profile-details">
+          <h3 class="section-title">Informations personnelles</h3>
+          <div class="form-group">
+            <label for="fullName">Nom complet :</label>
+            <input type="text" id="fullName" value="Jean Dupont" />
+          </div>
+          <div class="form-group">
+            <label for="birthdate">Date de naissance :</label>
+            <input type="date" id="birthdate" value="1957-05-15" />
+          </div>
+          <div class="form-group">
+            <label for="email">Adresse e-mail :</label>
+            <input type="email" id="email" value="jean.dupont@email.com" />
+            <p class="hint">Utilisée pour les rappels de rendez-vous</p>
+          </div>
+          <div class="form-group">
+            <label for="phone">Numéro de téléphone :</label>
+            <input type="tel" id="phone" value="06 12 34 56 78" />
+            <p class="hint">Utilisé pour les rappels par SMS</p>
+          </div>
+
+          <h3 class="section-title">Préférences de notifications</h3>
+          <div class="checkbox-group">
+            <input type="checkbox" id="emailNotifs" checked />
+            <label for="emailNotifs">Notifications par e-mail</label>
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="smsNotifs" checked />
+            <label for="smsNotifs">Notifications par SMS</label>
+          </div>
+
+          <div class="form-group">
+            <label for="reminderTiming">Rappels par défaut :</label>
+            <select id="reminderTiming">
+              <option value="15">15 minutes avant</option>
+              <option value="30">30 minutes avant</option>
+              <option value="60" selected>1 heure avant</option>
+              <option value="120">2 heures avant</option>
+              <option value="1440">1 jour avant</option>
+            </select>
+          </div>
+
+          <h3 class="section-title">Contacts d'urgence</h3>
+          <p>
+            Ces personnes recevront également les rappels de vos rendez-vous
+            importants.
+          </p>
+
+          <div class="contact-cards" id="contactsList">
+            <div class="contact-card">
+              <button class="remove-contact">&times;</button>
+              <div class="contact-name">Marie Dupont</div>
+              <div class="contact-relation">Épouse</div>
+              <div class="contact-info">07 23 45 67 89</div>
+              <div class="contact-info">marie.dupont@email.com</div>
+            </div>
+
+            <div class="contact-card">
+              <button class="remove-contact">&times;</button>
+              <div class="contact-name">Pierre Dupont</div>
+              <div class="contact-relation">Fils</div>
+              <div class="contact-info">06 34 56 78 90</div>
+              <div class="contact-info">pierre.dupont@email.com</div>
+            </div>
+          </div>
+
+          <button class="add-contact-btn" id="addContactBtn">
+            + Ajouter un contact
+          </button>
+          <div id="successMessage" class="success-message">
+            Vos modifications ont été enregistrées avec succès !
+          </div>
+          <button class="save-profile" id="saveProfileBtn">
+            Enregistrer les modifications
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <div class="modal" id="contactModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Ajouter un contact</h3>
+          <button class="close-modal" id="closeContactModal">&times;</button>
+        </div>
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="contactName">Nom complet :</label>
+            <input
+              type="text"
+              id="contactName"
+              placeholder="Nom du contact"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="contactRelation">Relation :</label>
+            <input
+              type="text"
+              id="contactRelation"
+              placeholder="Ex: Fils, Épouse, Infirmier, etc."
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="contactPhone">Téléphone :</label>
+            <input
+              type="tel"
+              id="contactPhone"
+              placeholder="Numéro de téléphone"
+            />
+          </div>
+          <div class="form-group">
+            <label for="contactEmail">Email :</label>
+            <input type="email" id="contactEmail" placeholder="Adresse email" />
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="contactNotify" checked />
+            <label for="contactNotify">Envoyer les rappels à ce contact</label>
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="save-profile">Ajouter</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!--footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-logo">
+            <img src="logo.png" alt="PillCare Logo" />
+          </div>
+          <div class="footer-links">
+            <h3>Liens rapides</h3>
+            <ul>
+              <li><a href="index.html">Accueil</a></li>
+              <li><a href="about.html">À propos</a></li>
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="privacy.html">Confidentialité</a></li>
+            </ul>
+          </div>
+          <div class="footer-contact">
+            <h3>Contact</h3>
+            <p><i class="fas fa-envelope"></i> contact@pillcare.com</p>
+            <p><i class="fas fa-phone"></i> +33 1 23 45 67 89</p>
+            <div class="social-icons">
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 PillCare. Tous droits réservés.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="profile.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

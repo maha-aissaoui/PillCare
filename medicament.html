@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mes Médicaments - PillCare</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Import des fichiers CSS -->
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="header.css" />
+    <link rel="stylesheet" href="footer.css" />
+    <link rel="stylesheet" href="medicament.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-bg"></div>
+      <div class="wave-container"></div>
+      <div class="header-content">
+        <div class="logo-container">
+          <img src="logo.png" alt="PillCare Logo" class="logo-img" />
+        </div>
+        <nav class="top-nav">
+          <a href="index.html" class="nav-item" data-page="home">Accueil</a>
+          <a
+            href="Medicament.html"
+            class="nav-item active"
+            data-page="Medicament"
+            >Medicaments</a
+          >
+          <a href="calendrier.html" class="nav-item" data-page="calendar"
+            >Calendrier</a
+          >
+          <a href="ordonance.html" class="nav-item" data-page="ordonance"
+            >ordonance</a
+          >
+          <a href="profile.html" class="nav-item" data-page="profile"
+            >profile</a
+          >
+        </nav>
+        <div class="user-menu">
+          <button id="user-btn"><i class="fas fa-user-circle"></i></button>
+          <div class="dropdown-menu">
+            <a href="settings.html"><i class="fas fa-cog"></i> Paramètres</a>
+            <a href="#" class="theme-toggle" onclick="toggleTheme()"
+              ><i class="fas fa-moon"></i> Thème</a
+            >
+            <a href="#" id="logout-btn"
+              ><i class="fas fa-sign-out-alt"></i> Déconnexion</a
+            >
+          </div>
+        </div>
+        <button class="mobile-menu-btn">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <div class="container">
+        <div class="page-header">
+          <h1 class="page-title">Mes Médicaments</h1>
+          <button class="btn btn-primary" id="add-medication-btn">
+            <i class="fas fa-plus"></i> Ajouter un médicament
+          </button>
+        </div>
+
+        <div class="search-filter">
+          <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="Rechercher un médicament..."
+              id="search-medication"
+            />
+          </div>
+
+          <div class="filter-container">
+            <button class="filter-btn">
+              <i class="fas fa-filter"></i>
+              <span>Filtrer</span>
+            </button>
+            <div class="filter-dropdown" id="filter-dropdown">
+              <div class="filter-options">
+                <label>Forme du médicament :</label>
+                <select id="form-filter">
+                  <option value="all">Tous</option>
+                  <option value="tablet">Comprimés</option>
+                  <option value="capsule">Gélules</option>
+                  <option value="liquid">Liquides</option>
+                  <option value="injection">Injections</option>
+                  <option value="other">Autres</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Les médicaments seront chargés dynamiquement ici -->
+        <div class="medications-grid">
+          <!-- Grille vide lors du chargement initial -->
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Add Medication Modal -->
+    <div class="modal" id="add-medication-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Ajouter un médicament</h2>
+          <button class="close-modal" id="close-modal">&times;</button>
+        </div>
+
+        <form class="modal-form" id="add-medication-form">
+          <div class="form-group">
+            <label for="medication-name">Nom du médicament</label>
+            <input type="text" id="medication-name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="medication-dosage">Dosage</label>
+            <input
+              type="text"
+              id="medication-dosage"
+              placeholder="ex: 500mg"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="medication-form">Forme</label>
+            <select id="medication-form" required>
+              <option value="tablet">Comprimé</option>
+              <option value="capsule">Gélule</option>
+              <option value="liquid">Liquide</option>
+              <option value="injection">Injection</option>
+              <option value="other">Autre</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="medication-qty">Quantité totale</label>
+            <input type="number" id="medication-qty" min="1" required />
+          </div>
+
+          <div class="form-group">
+            <label>Horaires</label>
+            <div class="time-slots">
+              <span class="time-slot">Matin</span>
+              <span class="time-slot">Midi</span>
+              <span class="time-slot">Après-midi</span>
+              <span class="time-slot">Soir</span>
+              <span class="time-slot">Coucher</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="medication-color">Couleur</label>
+            <select id="medication-color" required>
+              <option value="#4e73df">Bleu</option>
+              <option value="#1cc88a">Vert</option>
+              <option value="#e74a3b">Rouge</option>
+              <option value="#f6c23e">Jaune</option>
+              <option value="#36b9cc">Cyan</option>
+            </select>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-cancel" id="cancel-add">
+              Annuler
+            </button>
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Medication Modal -->
+    <div class="modal" id="edit-medication-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Modifier un médicament</h2>
+          <button class="close-modal" id="close-edit-modal">&times;</button>
+        </div>
+
+        <form class="modal-form" id="edit-medication-form">
+          <div class="form-group">
+            <label for="edit-medication-name">Nom du médicament</label>
+            <input type="text" id="edit-medication-name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="edit-medication-dosage">Dosage</label>
+            <input
+              type="text"
+              id="edit-medication-dosage"
+              placeholder="ex: 500mg"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="edit-medication-form">Forme</label>
+            <select id="edit-medication-form" required>
+              <option value="tablet">Comprimé</option>
+              <option value="capsule">Gélule</option>
+              <option value="liquid">Liquide</option>
+              <option value="injection">Injection</option>
+              <option value="other">Autre</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-medication-qty">Quantité totale</label>
+            <input type="number" id="edit-medication-qty" min="1" required />
+          </div>
+
+          <div class="form-group">
+            <label>Horaires</label>
+            <div class="time-slots">
+              <span class="edit-time-slot">Matin</span>
+              <span class="edit-time-slot">Midi</span>
+              <span class="edit-time-slot">Après-midi</span>
+              <span class="edit-time-slot">Soir</span>
+              <span class="edit-time-slot">Coucher</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-medication-color">Couleur</label>
+            <select id="edit-medication-color" required>
+              <option value="#4e73df">Bleu</option>
+              <option value="#1cc88a">Vert</option>
+              <option value="#e74a3b">Rouge</option>
+              <option value="#f6c23e">Jaune</option>
+              <option value="#36b9cc">Cyan</option>
+            </select>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-cancel" id="cancel-edit">
+              Annuler
+            </button>
+            <button type="submit" class="btn btn-primary">Mettre à jour</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Import du fichier de données simulé -->
+    <script src="data.js"></script>
+    <!-- Import des fichiers JavaScript -->
+    <script src="app.js"></script>
+    <script src="medicament.js"></script>
+  </body>
+</html>

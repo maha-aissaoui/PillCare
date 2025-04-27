@@ -1,0 +1,373 @@
+/* Variables CSS */
+:root {
+    --primary-color: #4285f4;
+    --primary-dark: #3367d6;
+    --secondary-color: #34a853;
+    --accent-color: #ea4335;
+    --warning-color: #fbbc05;
+    --text-color: #333333;
+    --text-light: #666666;
+    --bg-color: #f5f7fa;
+    --light-gray: #CEC4D0;
+    --white: #ffffff;
+    --footer:#2A1B29;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+}
+
+
+
+/* Utilitaires */
+.hidden {
+    display: none !important;
+}
+
+
+/* Reset et styles de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", system-ui, sans-serif;
+  }
+  
+  body {
+    height: 100%;
+    background-color: #f5f7fa;
+    color: #333;
+    padding-top: 150px; /* Espace pour le header */
+    padding-bottom: 20px;
+  }
+
+  /* Utilitaires */
+.hidden {
+    display: none !important;
+}
+
+/* Animation de l'écran de démarrage */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+
+.splash-content {
+    text-align: center;
+    color: var(--white);
+}
+
+.splash-content .logo {
+    width: 200px;
+    height: auto;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.splash-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.splash-content .quote {
+    font-style: italic;
+    margin-bottom: 30px;
+    max-width: 400px;
+}
+
+.loader {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--white);
+    animation: spin 1s ease-in-out infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+ 
+  
+  /* Contenu principal */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .page {
+    display: none;
+  }
+  
+  .page.active {
+    display: block;
+  }
+  
+  /* Section de bienvenue */
+#welcome-section {
+  padding: 80px 0;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.welcome-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+}
+
+.welcome-content p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto 40px;
+  color: var(--text-light);
+}
+
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.feature-card {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 30px;
+  width: 250px;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
+  background-color: #e6f0ff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+}
+
+.feature-card h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.feature-card p {
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.cta-buttons {
+  margin-top: 40px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 30px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition);
+  margin: 0 10px;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* Dashboard */
+#dashboard {
+  padding: 40px 0;
+}
+
+#dashboard h2 {
+  margin-bottom: 30px;
+  color: var(--primary-color);
+}
+
+.dashboard-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.card {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+
+.card h3 {
+  margin-bottom: 20px;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.med-item, .appointment-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.med-time {
+  font-weight: bold;
+  min-width: 60px;
+}
+
+.med-info, .appointment-info {
+  flex-grow: 1;
+  padding: 0 15px;
+}
+
+.med-info h4, .appointment-info h4 {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.med-info p, .appointment-info p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+.med-status .btn-small {
+  padding: 5px 15px;
+  border-radius: 20px;
+  background-color: var(--secondary-color);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.status {
+  font-size: 0.85rem;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.status.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.med-item.upcoming {
+  background-color: #f8f9fa;
+}
+
+.appointment-date {
+  background-color: var(--primary-color);
+  color: var(--white);
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.appointment-date .date {
+  font-size: 1.2rem;
+}
+
+.appointment-date .month {
+  font-size: 0.8rem;
+}
+
+.quick-actions {
+  margin-top: 40px;
+}
+
+.quick-actions h3 {
+  margin-bottom: 20px;
+  color: var(--primary-color);
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: var(--text-color);
+  transition: var(--transition);
+}
+
+.action-btn:hover {
+  transform: translateY(-5px);
+  color: var(--primary-color);
+}
+
+.action-btn i {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+
+
+@media screen and (max-width: 576px) {
+  .welcome-content h2 {
+      font-size: 2rem;
+  }
+
+  .btn {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+  }
+}

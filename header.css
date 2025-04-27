@@ -1,0 +1,151 @@
+ 
+ /* Header avec image de fond et effet ondulé */
+ .header {
+    top: 0%;
+    height: 20vh;
+    min-height: 200px;
+    position: absolute;
+    width: 100%;
+    background-image: url("pic1.jpg");
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+    z-index: 1000;
+    overflow: hidden;
+    opacity: 0.7; 
+  }
+    
+    /* Nouvel effet ondulé */
+    .header::after {   
+      content: "";
+      width: 100%;
+      height: 50px;
+      position: absolute;
+      bottom: -0.3%;
+      left: 0;
+      background-size: auto;
+      background-repeat: repeat no-repeat;
+      background-position: 70vw bottom;
+      background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1200 134' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M0 98L50 92C100 86 200 74 300 50C400 26 500 -10 600 2C700 14 800 74 900 98C1000 122 1100 110 1150 104L1200 98V134H1150C1100 134 1000 134 900 134C800 134 700 134 600 134C500 134 400 134 300 134C200 134 100 134 50 134H0V98Z' fill='%23f5f7fa'/></svg>");
+    }
+    
+    /* Contenu du header */
+    .header-content {
+      position: relative;
+      z-index: 3;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      height: 100%;
+    }
+    
+    /* Logo */
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo-img {
+      height: 80px;
+      width: auto;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    }
+    
+   
+    /* Barre de navigation en haut - Version alignée en haut */
+  .top-nav {
+    display: flex;
+    justify-content: center; /* Conserve le centrage horizontal des éléments */
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    border-radius: 25px;
+    width: fit-content;
+    /* Supprimez margin: auto */
+    position: absolute; /* Ajoutez cette ligne */
+    top: 30px; /* Ajustez cette valeur selon vos besoins */
+    left: 50%; /* Centre horizontalement */
+    transform: translateX(-50%); /* Centre parfaitement */
+    z-index: 10; /* Assure qu'elle est au-dessus des autres éléments */
+  }
+    .nav-item {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      padding: 5px 0;
+      position: relative;
+    }
+    
+    .nav-item.active {
+      font-weight: 600;
+    }
+    
+    .nav-item.active::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: white;
+    }
+    .user-menu {
+      position: relative;
+  }
+  
+  #user-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+  }
+  
+  .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: var(--white);
+      box-shadow: var(--shadow);
+      border-radius: var(--border-radius);
+      width: 200px;
+      display: none;
+      z-index: 100;
+  }
+  
+  .user-menu:hover .dropdown-menu {
+      display: block;
+  }
+  
+  .dropdown-menu a {
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: var(--text-color);
+      transition: var(--transition);
+  }
+  
+  .dropdown-menu a:hover {
+      background-color: var(--bg-color);
+      color: var(--primary-color);
+  }
+  
+  .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+  }
+  
+  .mobile-menu-btn span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: var(--text-color);
+      margin: 5px 0;
+  }

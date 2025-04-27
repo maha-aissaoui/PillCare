@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendrier Mémo - Aide-mémoire pour vos rendez-vous</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="calendrier.css" />
+    <link rel="stylesheet" href="header.css" />
+  </head>
+  <body>
+    <!--inclure header-->
+    <header class="header">
+      <div class="header-bg"></div>
+      <div class="wave-container"></div>
+      <div class="header-content">
+        <div class="logo-container">
+          <img src="logo.png" alt="PillCare Logo" class="logo-img" />
+        </div>
+        <nav class="top-nav">
+          <a href="index.html" class="nav-item" data-page="home">Accueil</a>
+          <a href="Medicament.html" class="nav-item" data-page="Medicament"
+            >Medicaments</a
+          >
+          <a href="calendrier.html" class="nav-item active" data-page="calendar"
+            >Calendrier</a
+          >
+          <a href="ordonance.html" class="nav-item" data-page="ordonance"
+            >ordonance</a
+          >
+          <a href="profile.html" class="nav-item" data-page="profile"
+            >profile</a
+          >
+        </nav>
+        <div class="user-menu">
+          <button id="user-btn"><i class="fas fa-user-circle"></i></button>
+          <div class="dropdown-menu">
+            <a href="settings.html"><i class="fas fa-cog"></i> Paramètres</a>
+            <a href="#" class="theme-toggle" onclick="toggleTheme()"
+              ><i class="fas fa-moon"></i> Thème</a
+            >
+            <a href="#" id="logout-btn"
+              ><i class="fas fa-sign-out-alt"></i> Déconnexion</a
+            >
+          </div>
+        </div>
+        <button class="mobile-menu-btn">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+    <div class="container">
+      <div class="header1">
+        <h1>Calendrier Mémo</h1>
+        <p class="subtitle">Votre aide-mémoire pour ne rien oublier</p>
+      </div>
+
+      <div class="calendar-container">
+        <div class="controls">
+          <div class="month-selector">
+            <button id="prevMonth">&lt;</button>
+            <div class="current-month" id="currentMonth">Avril 2025</div>
+            <button id="nextMonth">&gt;</button>
+          </div>
+          <button class="add-event-btn" id="addEventBtn">
+            + Ajouter un rendez-vous
+          </button>
+        </div>
+
+        <div class="calendar" id="calendar">
+          <!-- Les jours de la semaine seront ajoutés dynamiquement -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal pour ajouter/modifier un événement -->
+    <div class="modal" id="eventModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="modalTitle">Ajouter un rendez-vous</h3>
+          <button class="close-modal" id="closeModal">&times;</button>
+        </div>
+
+        <form id="eventForm">
+          <input type="hidden" id="eventDate" />
+          <input type="hidden" id="eventId" />
+
+          <div class="form-group">
+            <label for="eventType">Type:</label>
+            <select id="eventType">
+              <option value="event">Rendez-vous médical</option>
+              <option value="task">Tâche à faire</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="eventTitle">Titre:</label>
+            <input
+              type="text"
+              id="eventTitle"
+              placeholder="Ex: Docteur Martin"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="eventTime">Heure:</label>
+            <input type="time" id="eventTime" />
+          </div>
+
+          <div class="form-group">
+            <label for="eventDescription">Description:</label>
+            <textarea
+              id="eventDescription"
+              rows="2"
+              placeholder="Détails supplémentaires"
+            ></textarea>
+          </div>
+
+          <button
+            type="button"
+            class="toggle-notifications"
+            id="toggleNotifications"
+          >
+            + Options de rappel
+          </button>
+
+          <div
+            class="notification-settings notification-details"
+            id="notificationDetails"
+          >
+            <h4 class="notification-title">Rappels</h4>
+
+            <div class="checkbox-group">
+              <input type="checkbox" id="emailNotification" checked />
+              <label for="emailNotification">Email</label>
+            </div>
+
+            <div class="form-group">
+              <input
+                type="email"
+                id="emailAddress"
+                placeholder="Adresse email"
+              />
+            </div>
+
+            <div class="checkbox-group">
+              <input type="checkbox" id="smsNotification" checked />
+              <label for="smsNotification">SMS</label>
+            </div>
+
+            <div class="form-group">
+              <input
+                type="tel"
+                id="phoneNumber"
+                placeholder="Numéro de téléphone"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="reminderTime">Rappeler:</label>
+              <select id="reminderTime">
+                <option value="15">15 minutes avant</option>
+                <option value="30">30 minutes avant</option>
+                <option value="60" selected>1 heure avant</option>
+                <option value="120">2 heures avant</option>
+                <option value="1440">1 jour avant</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-buttons">
+            <button type="button" class="delete-btn" id="deleteEventBtn">
+              Supprimer
+            </button>
+            <button type="submit" class="save-btn">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--footer-->
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-logo">
+            <img src="logo.png" alt="PillCare Logo" />
+          </div>
+          <div class="footer-links">
+            <h3>Liens rapides</h3>
+            <ul>
+              <li><a href="index.html">Accueil</a></li>
+              <li><a href="about.html">À propos</a></li>
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="privacy.html">Confidentialité</a></li>
+            </ul>
+          </div>
+          <div class="footer-contact">
+            <h3>Contact</h3>
+            <p><i class="fas fa-envelope"></i> contact@pillcare.com</p>
+            <p><i class="fas fa-phone"></i> +33 1 23 45 67 89</p>
+            <div class="social-icons">
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 PillCare. Tous droits réservés.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Variables globales
+        const calendar = document.getElementById("calendar");
+        const currentMonthElem = document.getElementById("currentMonth");
+        const prevMonthBtn = document.getElementById("prevMonth");
+        const nextMonthBtn = document.getElementById("nextMonth");
+        const addEventBtn = document.getElementById("addEventBtn");
+        const eventModal = document.getElementById("eventModal");
+        const closeModal = document.getElementById("closeModal");
+        const eventForm = document.getElementById("eventForm");
+        const modalTitle = document.getElementById("modalTitle");
+        const deleteEventBtn = document.getElementById("deleteEventBtn");
+        const toggleNotifications = document.getElementById(
+          "toggleNotifications"
+        );
+        const notificationDetails = document.getElementById(
+          "notificationDetails"
+        );
+
+        let currentDate = new Date();
+        let selectedDate = null;
+        let events = JSON.parse(localStorage.getItem("calendarEvents")) || [];
+
+        // Noms des jours de la semaine et des mois
+        const weekdays = [
+          "Dimanche",
+          "Lundi",
+          "Mardi",
+          "Mercredi",
+          "Jeudi",
+          "Vendredi",
+          "Samedi",
+        ];
+        const months = [
+          "Janvier",
+          "Février",
+          "Mars",
+          "Avril",
+          "Mai",
+          "Juin",
+          "Juillet",
+          "Août",
+          "Septembre",
+          "Octobre",
+          "Novembre",
+          "Décembre",
+        ];
+
+        // Fonction pour basculer l'affichage des paramètres de notification
+        toggleNotifications.addEventListener("click", function () {
+          if (notificationDetails.style.display === "block") {
+            notificationDetails.style.display = "none";
+            toggleNotifications.textContent = "+ Options de rappel";
+          } else {
+            notificationDetails.style.display = "block";
+            toggleNotifications.textContent = "- Masquer les options";
+          }
+        });
+
+        // Fonction pour générer le calendrier
+        function generateCalendar() {
+          calendar.innerHTML = "";
+
+          // Ajouter les entêtes de jour de la semaine
+          weekdays.forEach((day) => {
+            const weekdayElem = document.createElement("div");
+            weekdayElem.className = "weekday";
+            weekdayElem.textContent = day;
+            calendar.appendChild(weekdayElem);
+          });
+
+          // Calculer le premier jour du mois
+          const firstDay = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            1
+          );
+          const lastDay = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth() + 1,
+            0
+          );
+
+          // Ajouter les jours vides avant le premier jour du mois
+          for (let i = 0; i < firstDay.getDay(); i++) {
+            const emptyDay = document.createElement("div");
+            emptyDay.className = "day empty";
+            calendar.appendChild(emptyDay);
+          }
+
+          // Ajouter les jours du mois
+          for (let i = 1; i <= lastDay.getDate(); i++) {
+            const dayElem = document.createElement("div");
+            dayElem.className = "day";
+            dayElem.setAttribute(
+              "data-date",
+              `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1)
+                .toString()
+                .padStart(2, "0")}-${i.toString().padStart(2, "0")}`
+            );
+            dayElem.setAttribute(
+              "data-weekday",
+              weekdays[
+                new Date(
+                  currentDate.getFullYear(),
+                  currentDate.getMonth(),
+                  i
+                ).getDay()
+              ]
+            );
+
+            // Vérifier si c'est aujourd'hui
+            const today = new Date();
+            if (
+              today.getDate() === i &&
+              today.getMonth() === currentDate.getMonth() &&
+              today.getFullYear() === currentDate.getFullYear()
+            ) {
+              dayElem.classList.add("today");
+            }
+
+            const dayNumber = document.createElement("span");
+            dayNumber.className = "day-number";
+            dayNumber.textContent = i;
+            dayElem.appendChild(dayNumber);
+
+            // Ajouter les événements pour ce jour
+            const dayEvents = events.filter((event) => {
+              const eventDate = new Date(event.date);
+              return (
+                eventDate.getDate() === i &&
+                eventDate.getMonth() === currentDate.getMonth() &&
+                eventDate.getFullYear() === currentDate.getFullYear()
+              );
+            });
+
+            dayEvents.forEach((event) => {
+              const eventElem = document.createElement("div");
+              eventElem.className = event.type === "event" ? "event" : "task";
+
+              let displayText = event.title;
+              if (event.time) {
+                displayText = `${event.time} - ${event.title}`;
+              }
+
+              eventElem.textContent = displayText;
+              eventElem.setAttribute("data-id", event.id);
+              eventElem.addEventListener("click", (e) => {
+                e.stopPropagation();
+                openEditEventModal(event);
+              });
+
+              dayElem.appendChild(eventElem);
+            });
+
+            // Ajouter l'événement click pour ajouter un nouvel événement
+            dayElem.addEventListener("click", () => {
+              const dateStr = dayElem.getAttribute("data-date");
+              openAddEventModal(dateStr);
+            });
+
+            calendar.appendChild(dayElem);
+          }
+
+          // Mettre à jour l'affichage du mois courant
+          currentMonthElem.textContent = `${
+            months[currentDate.getMonth()]
+          } ${currentDate.getFullYear()}`;
+        }
+
+        // Fonction pour ouvrir la modal d'ajout d'événement
+        function openAddEventModal(dateStr) {
+          selectedDate = dateStr;
+          modalTitle.textContent = "Ajouter un rendez-vous";
+          document.getElementById("eventId").value = "";
+          document.getElementById("eventDate").value = dateStr;
+          document.getElementById("eventType").value = "event";
+          document.getElementById("eventTitle").value = "";
+          document.getElementById("eventTime").value = "";
+          document.getElementById("eventDescription").value = "";
+          document.getElementById("emailAddress").value =
+            localStorage.getItem("userEmail") || "";
+          document.getElementById("phoneNumber").value =
+            localStorage.getItem("userPhone") || "";
+          deleteEventBtn.style.display = "none";
+
+          // Cacher les détails de notification par défaut
+          notificationDetails.style.display = "none";
+          toggleNotifications.textContent = "+ Options de rappel";
+
+          eventModal.style.display = "flex";
+        }
+
+        // Fonction pour ouvrir la modal d'édition d'événement
+        function openEditEventModal(event) {
+          selectedDate = event.date;
+          modalTitle.textContent = "Modifier un rendez-vous";
+          document.getElementById("eventId").value = event.id;
+          document.getElementById("eventDate").value = event.date;
+          document.getElementById("eventType").value = event.type;
+          document.getElementById("eventTitle").value = event.title;
+          document.getElementById("eventTime").value = event.time || "";
+          document.getElementById("eventDescription").value =
+            event.description || "";
+          document.getElementById("emailNotification").checked =
+            event.notifications?.email || true;
+          document.getElementById("smsNotification").checked =
+            event.notifications?.sms || true;
+          document.getElementById("emailAddress").value =
+            event.notifications?.emailAddress ||
+            localStorage.getItem("userEmail") ||
+            "";
+          document.getElementById("phoneNumber").value =
+            event.notifications?.phoneNumber ||
+            localStorage.getItem("userPhone") ||
+            "";
+          document.getElementById("reminderTime").value =
+            event.notifications?.reminderTime || "60";
+
+          // Cacher les détails de notification par défaut
+          notificationDetails.style.display = "none";
+          toggleNotifications.textContent = "+ Options de rappel";
+
+          deleteEventBtn.style.display = "block";
+
+          eventModal.style.display = "flex";
+        }
+
+        // Fonction pour sauvegarder un événement
+        function saveEvent(e) {
+          e.preventDefault();
+
+          const eventId =
+            document.getElementById("eventId").value || Date.now().toString();
+          const eventDate = document.getElementById("eventDate").value;
+          const eventType = document.getElementById("eventType").value;
+          const eventTitle = document.getElementById("eventTitle").value;
+          const eventTime = document.getElementById("eventTime").value;
+          const eventDescription =
+            document.getElementById("eventDescription").value;
+
+          // Sauvegarde des informations de contact pour les futures utilisations
+          const emailAddress = document.getElementById("emailAddress").value;
+          const phoneNumber = document.getElementById("phoneNumber").value;
+          localStorage.setItem("userEmail", emailAddress);
+          localStorage.setItem("userPhone", phoneNumber);
+
+          const newEvent = {
+            id: eventId,
+            date: eventDate,
+            type: eventType,
+            title: eventTitle,
+            time: eventTime,
+            description: eventDescription,
+            notifications: {
+              email: document.getElementById("emailNotification").checked,
+              sms: document.getElementById("smsNotification").checked,
+              emailAddress: emailAddress,
+              phoneNumber: phoneNumber,
+              reminderTime: document.getElementById("reminderTime").value,
+            },
+          };
+
+          // Si c'est un événement existant, le mettre à jour
+          const existingEventIndex = events.findIndex(
+            (event) => event.id === eventId
+          );
+          if (existingEventIndex !== -1) {
+            events[existingEventIndex] = newEvent;
+          } else {
+            // Sinon, ajouter le nouvel événement
+            events.push(newEvent);
+          }
+
+          // Sauvegarder dans localStorage
+          localStorage.setItem("calendarEvents", JSON.stringify(events));
+
+          // Simuler l'envoi vers un serveur pour les notifications
+          if (newEvent.notifications.email || newEvent.notifications.sms) {
+            scheduleNotification(newEvent);
+          }
+
+          // Fermer la modal et rafraîchir le calendrier
+          eventModal.style.display = "none";
+          generateCalendar();
+        }
+
+        // Fonction pour supprimer un événement
+        function deleteEvent() {
+          const eventId = document.getElementById("eventId").value;
+          events = events.filter((event) => event.id !== eventId);
+          localStorage.setItem("calendarEvents", JSON.stringify(events));
+          eventModal.style.display = "none";
+          generateCalendar();
+        }
+
+        // Fonction pour planifier une notification (simulation)
+        function scheduleNotification(event) {
+          console.log(
+            `Notification planifiée pour: ${event.title} le ${event.date} à ${event.time}`
+          );
+
+          // Cette partie serait normalement gérée par un serveur
+          // Dans une vraie application, cela enverrait les données à un serveur
+          // qui gérerait l'envoi des SMS et emails aux moments appropriés
+
+          // Pour l'exemple, nous simulons une notification immédiate
+          if (event.notifications.email && event.notifications.emailAddress) {
+            // Simule l'envoi d'un email
+            console.log(`Email envoyé à ${event.notifications.emailAddress}`);
+            alert(
+              `Simulation: Un email de rappel serait envoyé à ${event.notifications.emailAddress} pour "${event.title}"`
+            );
+          }
+
+          if (event.notifications.sms && event.notifications.phoneNumber) {
+            // Simule l'envoi d'un SMS
+            console.log(`SMS envoyé à ${event.notifications.phoneNumber}`);
+            alert(
+              `Simulation: Un SMS de rappel serait envoyé au ${event.notifications.phoneNumber} pour "${event.title}"`
+            );
+          }
+        }
+
+        // Événements d'écoute
+        prevMonthBtn.addEventListener("click", () => {
+          currentDate.setMonth(currentDate.getMonth() - 1);
+          generateCalendar();
+        });
+
+        nextMonthBtn.addEventListener("click", () => {
+          currentDate.setMonth(currentDate.getMonth() + 1);
+          generateCalendar();
+        });
+
+        addEventBtn.addEventListener("click", () => {
+          const today = new Date();
+          const dateStr = `${today.getFullYear()}-${(today.getMonth() + 1)
+            .toString()
+            .padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}`;
+          openAddEventModal(dateStr);
+        });
+
+        closeModal.addEventListener("click", () => {
+          eventModal.style.display = "none";
+        });
+
+        eventForm.addEventListener("submit", saveEvent);
+        deleteEventBtn.addEventListener("click", deleteEvent);
+
+        // Fermer la modal si on clique en dehors
+        window.addEventListener("click", (e) => {
+          if (e.target === eventModal) {
+            eventModal.style.display = "none";
+          }
+        });
+
+        // Initialiser le calendrier
+        generateCalendar();
+
+        // Gestion des onglets de filtrage des rendez-vous
+        const tabButtons = document.querySelectorAll(".tab-btn");
+        const appointmentCards = document.querySelectorAll(".appointment-card");
+
+        tabButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            // Activer le bouton cliqué
+            tabButtons.forEach((btn) => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Filtrer les cartes
+            const filter = button.getAttribute("data-filter");
+            appointmentCards.forEach((card) => {
+              if (
+                filter === "all" ||
+                card.getAttribute("data-type") === filter
+              ) {
+                card.style.display = "block";
+              } else {
+                card.style.display = "none";
+              }
+            });
+          });
+        });
+
+        // Gestion des boutons d'édition sur les cartes
+        document
+          .querySelectorAll(".appointment-card .edit-btn")
+          .forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const eventId = btn.getAttribute("data-id");
+              // Trouver l'événement correspondant dans les données chargées
+              const event = events.find((e) => e.id === eventId);
+              if (event) {
+                openEditEventModal(event);
+              }
+            });
+          });
+
+        // Gestion des boutons de suppression sur les cartes
+        document
+          .querySelectorAll(".appointment-card .delete-btn")
+          .forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const eventId = btn.getAttribute("data-id");
+              const eventTitle = btn.getAttribute("data-title");
+
+              if (
+                confirm(
+                  `Êtes-vous sûr de vouloir supprimer le rendez-vous "${eventTitle}" ?`
+                )
+              ) {
+                const formData = new FormData();
+                formData.append("action", "deleteEvent");
+                formData.append("id", eventId);
+                formData.append("titre", eventTitle);
+
+                fetch("calendrier.php", {
+                  method: "POST",
+                  body: formData,
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    if (data.success) {
+                      // Recharger la page pour actualiser la liste des rendez-vous
+                      window.location.reload();
+                    } else {
+                      alert(
+                        "Une erreur est survenue lors de la suppression du rendez-vous."
+                      );
+                    }
+                  })
+                  .catch((error) => {
+                    console.error("Erreur:", error);
+                    alert("Une erreur est survenue. Veuillez réessayer.");
+                  });
+              }
+            });
+          });
+      });
+    </script>
+    <script src="app.js"></script>
+  </body>
+</html>
